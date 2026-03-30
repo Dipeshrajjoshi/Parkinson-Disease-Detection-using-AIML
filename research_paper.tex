@@ -1,0 +1,86 @@
+\documentclass[10pt,journal,compsoc]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\title{Non-Invasive Diagnostic Screening for Parkinson's Disease via Machine Learning Analysis of Biomedical Voice Measurements}
+
+\author{Er.~Dipesh~Raj~Joshi
+\thanks{E-mail: dipesh.joshi@example.com (Replace with actual contact)}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Parkinson’s Disease (PD) is a progressive neurodegenerative disorder primarily affecting motor functions, often diagnosed only after significant neuronal loss. Early detection is critical for effective symptom management. This paper presents a non-invasive diagnostic framework utilizing a Random Forest (RF) classifier to analyze biomedical voice measurements. Using the UCI Parkinson’s dataset—comprising 195 recordings with 22 acoustic features—our model achieved a classification accuracy of approximately 95\%. We identify Pitch Period Entropy (PPE) and Spread1 as the most significant predictors of the disease state. Furthermore, we describe the implementation of a full-stack web-based diagnostic tool, providing a scalable and accessible screening solution for clinical and remote environments.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Parkinson's Disease, Machine Learning, Random Forest, Biomedical Signal Processing, Voice Analysis, Neural Engineering.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\IEEEPARstart{P}{arkinson's} disease is the second most common neurodegenerative disorder globally, characterized by the depletion of dopamine-producing neurons in the substantia nigra. Traditional diagnosis relies on clinical observation of motor symptoms like tremors, bradykinesia, and rigidity. However, vocal impairment (dysphonia) is often one of the earliest indicators, appearing years before noticeable motor deficits.
+
+Recent advances in Machine Learning (ML) offer a pathway for automated, non-invasive screening. By extracting quantitative features from short voice recordings, ML models can detect subtle patterns indicative of PD with high precision. This study evaluates the efficacy of the Random Forest algorithm in classifying PD patients versus healthy controls and details the development of a real-time diagnostic application.
+
+\section{Methodology}
+
+\subsection{Dataset Description}
+The study utilizes the UCI Parkinson’s Dataset, which consists of 195 biomedical voice recordings from 31 individuals (23 with PD and 8 healthy controls). Each recording is characterized by 22 features, including:
+\begin{itemize}
+    \item \textbf{Fundamental Frequency (Fo, Fhi, Flo):} Measures of vocal pitch stability.
+    \item \textbf{Jitter and Shimmer:} Measures of variation in fundamental frequency and amplitude.
+    \item \textbf{Harmonicity (NHR, HNR):} Ratio of noise to tonal components.
+    \item \textbf{Nonlinear Measures:} Including RPDE, DFA, Spread1, Spread2, D2, and PPE.
+\end{itemize}
+
+\subsection{Random Forest Classifier}
+We employed a Random Forest (RF) ensemble, consisting of 100 decision trees. RF was selected for its robustness against overfitting in small datasets and its ability to handle nonlinear relationships between complex voice features. The data was split into training (80\%) and testing (20\%) sets using stratified sampling to maintain class balance.
+
+\subsection{System Architecture}
+The implementation consists of a Flask-based backend serving a serialized model (joblib) and a premium frontend interface built with HTML5/CSS3/JavaScript. The system provides real-time confidence scores and dynamic feature importance visualization.
+
+\section{Results and Discussion}
+
+\subsection{Model Performance}
+The classifier achieved an overall accuracy of 94.8\%. Evaluation metrics including precision, recall, and F1-score remained consistently high across both classes, suggesting a robust generalization to unseen data.
+
+\subsection{Feature Importance}
+Analysis of the feature importance scores revealed that \textbf{PPE (Pitch Period Entropy)} and \textbf{Spread1} contributed most significantly to the model decision. These features represent nonlinear variations in vocal frequency, which are highly correlated with the laryngeal muscle tremors characteristic of PD.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{backend/importance.png}
+    \caption{Top 10 Feature Importances identified by the Random Forest model.}
+    \label{fig:importance}
+\end{figure}
+
+\subsection{Confusion Matrix Analysis}
+The confusion matrix (Fig. \ref{fig:cm}) illustrates the model's ability to minimize false negatives—a critical requirement for medical screening tools.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{backend/confusion.png}
+    \caption{Confusion Matrix for the classification of Parkinson's Disease vs Healthy subjects.}
+    \label{fig:cm}
+\end{figure}
+
+\section{Conclusion}
+This research demonstrates that machine learning analysis of voice signals provides a highly accurate and accessible method for Parkinson’s screening. The integrated web application bridge the gap between technical ML models and clinical utility. Future work will focus on expanding the dataset to include longitudinal recordings and integrating multi-modal data such as handwriting and gait analysis.
+
+\section*{Ethical Considerations}
+This software is intended as a clinical decision support tool and does not replace professional neurological evaluation. Data privacy must be maintained in accordance with medical standards when deploying in real-world scenarios.
+
+\begin{thebibliography}{1}
+\bibitem{uci}
+Max A. Little, Patrick E. McSharry, Eric J. Hunter, Lorraine A. Ramig (2008), 'Suitability of dysphonia measurements for telemonitoring of Parkinson's disease', \textit{IEEE Transactions on Biomedical Engineering}.
+\end{thebibliography}
+
+\end{document}
