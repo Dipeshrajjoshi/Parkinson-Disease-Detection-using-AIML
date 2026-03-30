@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parkinson's Disease Detector | AI-Powered Diagnosis</title>
+  <meta name="description" content="AI-powered Parkinson's disease detection using biomedical voice measurements. Enter your acoustic features for an instant prediction." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background particles -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="page-wrapper">
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">🧠</div>
+          <div class="logo-text">
+            <span class="logo-title">NeuroDetect</span>
+            <span class="logo-sub">Parkinson's AI</span>
+          </div>
+        </div>
+        <div class="header-badge">
+          <span class="badge-dot"></span>
+          <span>Model Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="hero-label">AI · Voice Analysis · Clinical Tool</div>
+      <h1 class="hero-title">Parkinson's Disease<br /><span class="gradient-text">Voice Diagnostics</span></h1>
+      <p class="hero-desc">Enter biomedical voice measurements below for an instant AI-powered Parkinson's disease prediction using our trained Random Forest model.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-val">196</span><span class="stat-lbl">Training Samples</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-val">22</span><span class="stat-lbl">Voice Features</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-val">~95%</span><span class="stat-lbl">Accuracy</span></div>
+      </div>
+    </section>
+
+    <!-- ===== PATIENT INFO ===== -->
+    <section class="card patient-card">
+      <div class="card-header">
+        <span class="card-icon">👤</span>
+        <h2>Patient &amp; Clinician Details</h2>
+      </div>
+      <div class="patient-grid">
+        <div class="field-group">
+          <label for="patientName">Patient Name</label>
+          <input id="patientName" class="field-input" type="text" placeholder="Full name" />
+        </div>
+        <div class="field-group">
+          <label for="patientAge">Age</label>
+          <input id="patientAge" class="field-input" type="number" min="1" max="120" placeholder="Years" />
+        </div>
+        <div class="field-group">
+          <label for="patientAddress">Address / Location</label>
+          <input id="patientAddress" class="field-input" type="text" placeholder="City or facility" />
+        </div>
+        <div class="field-group">
+          <label for="doctorName">Clinician Name</label>
+          <input id="doctorName" class="field-input" type="text" placeholder="Dr. ..." />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FORM ===== -->
+    <form id="predict-form">
+
+      <!-- Frequency -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🎵</span>
+          <div>
+            <h2>Fundamental Frequency</h2>
+            <p class="card-desc">Average vocal cord vibration measurements</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <div class="field-group">
+            <label for="f0">MDVP:Fo(Hz) <span class="tip">Avg. vocal freq.</span></label>
+            <input id="f0" data-feature="0" class="field-input feat-input" type="number" step="any" placeholder="e.g. 119.99" />
+          </div>
+          <div class="field-group">
+            <label for="fhi">MDVP:Fhi(Hz) <span class="tip">Max freq.</span></label>
+            <input id="fhi" data-feature="1" class="field-input feat-input" type="number" step="any" placeholder="e.g. 157.30" />
+          </div>
+          <div class="field-group">
+            <label for="flo">MDVP:Flo(Hz) <span class="tip">Min freq.</span></label>
+            <input id="flo" data-feature="2" class="field-input feat-input" type="number" step="any" placeholder="e.g. 74.99" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Jitter -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">⚡</span>
+          <div>
+            <h2>Jitter Measurements</h2>
+            <p class="card-desc">Cycle-to-cycle frequency variation</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <div class="field-group">
+            <label for="jitter_pct">MDVP:Jitter(%) <span class="tip">% variation</span></label>
+            <input id="jitter_pct" data-feature="3" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.00784" />
+          </div>
+          <div class="field-group">
+            <label for="jitter_abs">MDVP:Jitter(Abs) <span class="tip">Absolute Jitter</span></label>
+            <input id="jitter_abs" data-feature="4" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.00007" />
+          </div>
+          <div class="field-group">
+            <label for="rap">MDVP:RAP <span class="tip">Relative avg. perturbation</span></label>
+            <input id="rap" data-feature="5" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.00370" />
+          </div>
+          <div class="field-group">
+            <label for="ppq">MDVP:PPQ <span class="tip">5-point perturbation quotient</span></label>
+            <input id="ppq" data-feature="6" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.00554" />
+          </div>
+          <div class="field-group">
+            <label for="jitter_ddp">Jitter:DDP <span class="tip">Avg. abs. diff. of RAP</span></label>
+            <input id="jitter_ddp" data-feature="7" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.01109" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Shimmer -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">📉</span>
+          <div>
+            <h2>Shimmer Measurements</h2>
+            <p class="card-desc">Amplitude variation between cycles</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <div class="field-group">
+            <label for="shimmer">MDVP:Shimmer <span class="tip">Amplitude variation</span></label>
+            <input id="shimmer" data-feature="8" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.04374" />
+          </div>
+          <div class="field-group">
+            <label for="shimmer_db">MDVP:Shimmer(dB) <span class="tip">Shimmer in dB</span></label>
+            <input id="shimmer_db" data-feature="9" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.42600" />
+          </div>
+          <div class="field-group">
+            <label for="apq3">Shimmer:APQ3 <span class="tip">3-point amplitude quotient</span></label>
+            <input id="apq3" data-feature="10" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.02182" />
+          </div>
+          <div class="field-group">
+            <label for="apq5">Shimmer:APQ5 <span class="tip">5-point amplitude quotient</span></label>
+            <input id="apq5" data-feature="11" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.03130" />
+          </div>
+          <div class="field-group">
+            <label for="mdvp_apq">MDVP:APQ <span class="tip">11-point amplitude quotient</span></label>
+            <input id="mdvp_apq" data-feature="12" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.02971" />
+          </div>
+          <div class="field-group">
+            <label for="shimmer_dda">Shimmer:DDA <span class="tip">Avg. abs. diff of APQ3</span></label>
+            <input id="shimmer_dda" data-feature="13" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.06545" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Noise & Harmonicity -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🔊</span>
+          <div>
+            <h2>Noise &amp; Harmonicity</h2>
+            <p class="card-desc">Ratio of noise to harmonics in voice</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <div class="field-group">
+            <label for="nhr">NHR <span class="tip">Noise-to-harmonics ratio</span></label>
+            <input id="nhr" data-feature="14" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.02211" />
+          </div>
+          <div class="field-group">
+            <label for="hnr">HNR <span class="tip">Harmonics-to-noise ratio</span></label>
+            <input id="hnr" data-feature="15" class="field-input feat-input" type="number" step="any" placeholder="e.g. 21.033" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Nonlinear -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-icon">🌀</span>
+          <div>
+            <h2>Nonlinear Dynamical Measures</h2>
+            <p class="card-desc">Complexity and chaos metrics from vocal signal</p>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <div class="field-group">
+            <label for="rpde">RPDE <span class="tip">Recurrence period density entropy</span></label>
+            <input id="rpde" data-feature="16" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.41478" />
+          </div>
+          <div class="field-group">
+            <label for="dfa">DFA <span class="tip">Detrended fluctuation analysis</span></label>
+            <input id="dfa" data-feature="17" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.81528" />
+          </div>
+          <div class="field-group">
+            <label for="spread1">spread1 <span class="tip">Nonlinear fundamental freq. variation</span></label>
+            <input id="spread1" data-feature="18" class="field-input feat-input" type="number" step="any" placeholder="e.g. -4.813" />
+          </div>
+          <div class="field-group">
+            <label for="spread2">spread2 <span class="tip">Nonlinear freq. variation 2</span></label>
+            <input id="spread2" data-feature="19" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.26648" />
+          </div>
+          <div class="field-group">
+            <label for="d2">D2 <span class="tip">Correlation dimension</span></label>
+            <input id="d2" data-feature="20" class="field-input feat-input" type="number" step="any" placeholder="e.g. 2.30144" />
+          </div>
+          <div class="field-group">
+            <label for="ppe">PPE <span class="tip">Pitch period entropy</span></label>
+            <input id="ppe" data-feature="21" class="field-input feat-input" type="number" step="any" placeholder="e.g. 0.28465" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Action buttons -->
+      <div class="form-actions">
+        <button type="submit" id="predict-btn" class="btn btn-primary">
+          <span class="btn-icon">🎯</span>
+          <span class="btn-text">Run Prediction</span>
+          <span class="btn-loader" id="btn-loader" style="display:none;">⟳</span>
+        </button>
+        <button type="button" id="demo-btn" class="btn btn-secondary" onclick="loadDemoValues()">
+          <span class="btn-icon">📋</span>
+          Demo Values
+        </button>
+        <button type="reset" class="btn btn-ghost" onclick="clearResult()">
+          <span class="btn-icon">🗑️</span>
+          Clear
+        </button>
+      </div>
+
+    </form>
+
+    <!-- ===== RESULT PANEL ===== -->
+    <div id="result-panel" class="result-panel" style="display:none;">
+      <div class="result-header">
+        <span id="result-icon" class="result-big-icon"></span>
+        <div>
+          <div id="result-label" class="result-label"></div>
+          <div id="result-patient" class="result-patient"></div>
+        </div>
+      </div>
+
+      <!-- Confidence bars -->
+      <div class="confidence-section">
+        <div class="conf-row">
+          <span class="conf-label">✅ Healthy</span>
+          <div class="conf-bar-wrap">
+            <div id="bar-healthy" class="conf-bar conf-bar-healthy" style="width:0%"></div>
+          </div>
+          <span id="pct-healthy" class="conf-pct">0%</span>
+        </div>
+        <div class="conf-row">
+          <span class="conf-label">⚠️ Parkinson's</span>
+          <div class="conf-bar-wrap">
+            <div id="bar-park" class="conf-bar conf-bar-park" style="width:0%"></div>
+          </div>
+          <span id="pct-park" class="conf-pct">0%</span>
+        </div>
+      </div>
+
+      <div class="result-meta" id="result-meta"></div>
+
+      <div class="result-actions">
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Report</button>
+        <button class="btn btn-ghost" onclick="generateAndShowGraphs()">📊 Load Graphs</button>
+      </div>
+    </div>
+
+    <!-- ===== GRAPHS ===== -->
+    <section id="graphs-section" class="graphs-section" style="display:none;">
+      <div class="section-title">
+        <h2>📊 Model Visualizations</h2>
+        <p>Generated from the real UCI Parkinson's dataset (196 samples)</p>
+      </div>
+      <div class="graphs-grid">
+        <div class="graph-card">
+          <h3>Confusion Matrix</h3>
+          <div class="graph-img-wrap">
+            <img id="confusion-img" src="" alt="Confusion Matrix" />
+          </div>
+        </div>
+        <div class="graph-card">
+          <h3>Top 10 Feature Importances</h3>
+          <div class="graph-img-wrap">
+            <img id="importance-img" src="" alt="Feature Importance" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DISCLAIMER ===== -->
+    <div class="disclaimer">
+      ⚠️ <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only. It is <em>not</em> a substitute for professional medical diagnosis. Always consult a qualified healthcare provider.
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>Built by <strong>Er. Dipesh Raj Joshi</strong></span>
+        <span class="footer-sep">·</span>
+        <span>Powered by Random Forest + Flask</span>
+        <span class="footer-sep">·</span>
+        <span>UCI Parkinson's Dataset</span>
+      </div>
+    </footer>
+
+  </div><!-- end page-wrapper -->
+
+  <script src="script.js"></script>
+</body>
+</html>
